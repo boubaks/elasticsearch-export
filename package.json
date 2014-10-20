@@ -1,0 +1,29 @@
+{
+  "name": "elasticsearch-console",
+  "version": "0.0.0",
+  "description": "elasticsearch-console =========",
+  "main": "elasticsearch-console.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/boubaks/elasticsearch-console.git"
+  },
+  "author": "boubaks",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/boubaks/elasticsearch-console/issues"
+  },
+  "homepage": "https://github.com/boubaks/elasticsearch-console",
+  "dependencies": {
+    "mongodb": "*",
+    "node-getopt": "*",
+    "elasticsearch": "*",
+    "winston": "*",
+    "readline": "*",
+    "logger": "*",
+    "mocha": "*",
+    "requestify": "*"
+  }
+}
