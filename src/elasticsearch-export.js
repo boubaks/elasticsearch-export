@@ -11,6 +11,7 @@ var opt = getopt.create([
     ['o', 'output=ARG', 'name of file where the JSON will be extract'],
     ['s', 'size=ARG', 'get this number of entities'],
     ['f', 'from=ARG', 'get entities from this number'],
+    ['', 'jsonELS', 'get the json with the _source'],
     ['P', 'port=ARG', 'port to connect to'],
     ['H', 'host=ARG', 'server to connect to'],
     ['h', 'help', 'display this help'],
@@ -30,10 +31,26 @@ var type = opt.options.type ? opt.options.type : index;
 var output = opt.options.output ? opt.options.output : 'output';
 var size = opt.options.size ? opt.options.size : 10;
 var from = opt.options.from ? opt.options.from : 0;
+var jsonELS = opt.options.jsonELS ? opt.options.jsonELS : null;
 
 /*
 ** Initialization elasticsearch client & query
 */
+function writeData(res, callback) {
+    if (!jsonELS) {
+	fs.writeFileSync(output, JSON.stringify(res.hits.hits));
+	callback(null);
+    } else {
+	var datas = [];
+	for (iterator in res.hits.hits) {
+	    res.hits.hits[iterator]._source._id = res.hits.hits[iterator]._id;
+	    datas.push(res.hits.hits[iterator]._source);
+	}
+	fs.writeFileSync(output, JSON.stringify(datas));
+	callback(null);
+    }
+}
+
 new ELSCLIENT(host, port, function(elsClient, msg) {
     if (!elsClient)
 	throw('Couldn\'t connect to ELS');
@@ -48,7 +65,6 @@ new ELSCLIENT(host, port, function(elsClient, msg) {
 	from: from
     };
 
-
     if (!opt.options.size) {
 	elsQuery.generate(type, query, null, {term: true}, function(err, queryELS) {
 	    if (err) {
@@ -61,8 +77,12 @@ new ELSCLIENT(host, port, function(elsClient, msg) {
 		    if (size > 0) {
 			elsClient.search(index, query, options, function(err, res) {
 			    logger.info('elasticsearch-exported=> '+ size + ' files exported on file ' + output);
-			    fs.writeFileSync(output, JSON.stringify(res.hits.hits));
-			    process.kill();
+			    writeData(res, function(err) {
+				if (err)
+				    console.log(err);
+				process.kill();				
+			    });
+
 			});
 		    } else {
 			logger.info('elasticsearch-exported=> no file exported');
