@@ -8,6 +8,7 @@ var opt = getopt.create([
     ['i', 'index=ARG', 'index to export (default to all)'],
     ['t', 'type=ARG', 'type to export'],
     ['q', 'query=ARG', 'export by a query'],
+    ['e', 'elsQuery=ARG', 'export by a elasticsearch query'],
     ['o', 'output=ARG', 'name of file where the JSON will be extract'],
     ['s', 'size=ARG', 'get this number of entities'],
     ['f', 'from=ARG', 'get entities from this number'],
@@ -32,6 +33,7 @@ var output = opt.options.output ? opt.options.output : 'output';
 var size = opt.options.size ? opt.options.size : 10;
 var from = opt.options.from ? opt.options.from : 0;
 var jsonELS = opt.options.jsonELS ? opt.options.jsonELS : null;
+var elsQuery = opt.options.elsQuery ? opt.options.elsQuery : null;
 
 /*
 ** Initialization elasticsearch client & query
@@ -70,7 +72,10 @@ new ELSCLIENT(host, port, function(elsClient, msg) {
 	    if (err) {
 		console.log(err);
 	    } else {
-		query = queryELS;
+	    if (elsClient)
+			query = elsClient;
+		else
+			query = queryELS;
 		elsClient.count(index, query, function(err, result) {
 		    size = result.count;
 		    options.size = size;
