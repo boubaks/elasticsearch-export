@@ -72,10 +72,16 @@ new ELSCLIENT(host, port, function(elsClient, msg) {
 	    if (err) {
 		console.log(err);
 	    } else {
-	    if (elsClient)
-			query = elsClient;
-		else
+	    if (elsClient) {
+	    	try {
+				query = JSON.parse(elsClient);
+			} catch (e) {
+				console.log(e);
+				query = {};
+			}
+		} else {
 			query = queryELS;
+		}
 		elsClient.count(index, query, function(err, result) {
 		    size = result.count;
 		    options.size = size;
