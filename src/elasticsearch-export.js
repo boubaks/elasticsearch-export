@@ -57,9 +57,9 @@ new ELSCLIENT(host, port, function(elsClient, msg) {
     if (!elsClient)
 	throw('Couldn\'t connect to ELS');
     var scope = this;
-    var elsQuery = undefined;
+    var elsQueryM = undefined;
     new ELSQUERY(function(tmpQuery) {
-	elsQuery = tmpQuery;
+		elsQueryM = tmpQuery;
     });
 
     var options = {
@@ -68,13 +68,14 @@ new ELSCLIENT(host, port, function(elsClient, msg) {
     };
 
     if (!opt.options.size) {
-	elsQuery.generate(type, query, null, {term: true}, function(err, queryELS) {
+	elsQueryM.generate(type, query, null, {term: true}, function(err, queryELS) {
 	    if (err) {
 		console.log(err);
 	    } else {
-	    if (elsClient) {
+	    if (elsQuery) {
 	    	try {
-				query = JSON.parse(elsClient);
+	    		console.log('elsQuery', elsQuery);
+				query = JSON.parse(elsQuery);
 			} catch (e) {
 				console.log(e);
 				query = {};
