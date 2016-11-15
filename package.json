@@ -1,29 +1,33 @@
 {
   "name": "elasticsearch-export",
-  "version": "0.0.0",
-  "description": "elasticsearch-export =========",
-  "main": "elasticsearch-export.js",
+  "version": "1.0.0",
+  "description": "exports elasticsearch datas into JSON files",
+  "main": "./src/elasticsearch-export.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/boubaks/elasticsearch-export.git"
+    "url": "git+https://github.com/boubaks/elasticsearch-export.git"
   },
+  "keywords": [
+    "elasticsearch",
+    "export"
+  ],
   "author": "boubaks",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/boubaks/elasticsearch-export/issues"
   },
-  "homepage": "https://github.com/boubaks/elasticsearch-export",
+  "bin": {
+    "elasticsearch-export": "./src/elasticsearch-export.js"
+  },
+  "preferGlobal": "true",
+  "homepage": "https://github.com/boubaks/elasticsearch-export#readme",
   "dependencies": {
-    "mongodb": "*",
-    "node-getopt": "*",
-    "elasticsearch": "*",
-    "winston": "*",
-    "readline": "*",
-    "logger": "*",
-    "mocha": "*",
-    "requestify": "*"
+    "elasticsearch-client": "^1.0.1",
+    "elasticsearch-query": "^1.0.3",
+    "node-getopt": "^0.2.3",
+    "winston": "^2.3.0"
   }
 }
